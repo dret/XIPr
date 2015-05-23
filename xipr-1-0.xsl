@@ -10,20 +10,20 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xipr="http://dret.net/projects/xipr/">
 	<xsl:template match="/*">
-		<!-- if there is no other template handling the document element, this template initiates xinclude processing at the document element of the input document. -->
+		<!-- if there is no other template handling the document element, this template initiates XInclude processing at the document element of the input document. -->
 		<xsl:apply-templates select="." mode="xipr"/>
 	</xsl:template>
 	<xsl:template match="@* | node()" mode="xipr">
 		<xsl:apply-templates select="." mode="xipr-internal">
-			<!-- the sequences of included uri/xpointer values need to be initialized with the starting document of the xinclude processing (required for detecting inclusion loops). -->
+			<!-- the sequences of included URI/XPointer values need to be initialized with the starting document of the XInclude processing (required for detecting inclusion loops). -->
 			<xsl:with-param name="uri-history" select="document-uri(/)" tunnel="yes"/>
 			<xsl:with-param name="xpointer-history" select="''" tunnel="yes"/>
 		</xsl:apply-templates>
 	</xsl:template>
 	<xsl:template match="@* | node()" mode="xipr-internal">
-		<!-- this template handles all nodes which do not require xinclude processing. -->
+		<!-- this template handles all nodes which do not require XInclude processing. -->
 		<xsl:copy>
-			<!-- the xinclude process recursively processes the document until it finds an xinclude node. -->
+			<!-- the XInclude process recursively processes the document until it finds an XInclude node. -->
 			<xsl:apply-templates select="@* | node()" mode="xipr-internal"/>
 		</xsl:copy>
 	</xsl:template>
@@ -70,7 +70,7 @@
 								<xsl:for-each select="$include-doc/node()">
 									<xsl:choose>
 										<xsl:when test="self::*">
-											<!-- for elements, copy the element and perform base uri fixup. -->
+											<!-- for elements, copy the element and perform base URI fixup. -->
 											<xsl:copy-of select="xipr:include(., $include-uri, @xpointer, $uri-history, $xpointer-history)"/>
 										</xsl:when>
 										<xsl:otherwise>
